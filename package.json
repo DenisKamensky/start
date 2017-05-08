@@ -1,0 +1,7 @@
+{
+  "name": "starter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "DenisKamensky <kengji45@gmail.com>",
+  "license": "MIT"
+}
