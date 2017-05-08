@@ -1,0 +1,20 @@
+{
+  "name": "starter",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "DenisKamensky <kengji45@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/DenisKamensky/start",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "Boostrap Grid": "bootstrap-grid-css#*"
+  }
+}
