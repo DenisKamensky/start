@@ -1,4 +1,5 @@
 {
-  "styles": ["app/libs/Boostrap Grid/grid.css"],
-  "scripts": []
+  "styles": ["app/libs/bootstrap-grid/dist/bootstrap-grid.min.css"],
+  "scripts": [],
+  "fonts": ""
 }

@@ -44,7 +44,7 @@ gulp.task('style',()=>{
   .pipe(browserSync.stream({match: '**/*.css'}))
 })
 gulp.task('js',()=>{
-  return vfs.src('assets/js/**/*.js')
+  return vfs.src('app/js/**/main.js')
   .pipe(plumber({
     errerHandler: notify.onError((err)=>{
       return{
@@ -56,19 +56,28 @@ gulp.task('js',()=>{
   .pipe(babel({
     presets: ['es2015']
   }))
-  .pipe(vfs.dest(`${resultPath}/js`));
+  .pipe(uglify())
+  .pipe(vfs.dest(`public/js`));
 });
 gulp.task('server',()=>{
   browserSync.init({
-        proxy: "anime.dev"
+      server: {
+        baseDir: "./public"
+      }
     });
-    gulp.watch('assets/sass/**/*.*',['style'])
-    gulp.watch('assets/**/*.js',['js'])
-    gulp.watch('assets/img/**/*.*',['tiny:png']);
-    gulp.watch('assets/**/*.js').on('change',browserSync.reload);
+    gulp.watch('app/*.html',['html']);
+    gulp.watch('app/styles/**/*.{sass,scss}',['style']);
+    gulp.watch('app/**/*.js',['js']);
+    gulp.watch('app/img/**/*.*',['tiny:png']);
+    gulp.watch('public/**/*.js').on('change',browserSync.reload);
+    gulp.watch('public/*.html').on('change',browserSync.reload);
+})
+gulp.task('html',()=>{
+  return vfs.src('app/**/*.html')
+  .pipe(vfs.dest('public'));
 })
 gulp.task('sprites',()=>{
-  let spriteData = gulp.src('assets/sprite/*.png').pipe(spritesmith({
+  let spriteData = gulp.src('app/sprite/*.png').pipe(spritesmith({
    imgName: 'sprite.png',
    cssName: '_sprite.scss',
    padding: 10,
@@ -77,16 +86,16 @@ gulp.task('sprites',()=>{
   let  imgStream = spriteData.img
     .pipe(buffer())
     .pipe(tinypng(apiKey))
-    .pipe(vfs.dest(`${resultPath}/img`));
+    .pipe(vfs.dest(`public/img`));
     var cssStream = spriteData.css
-     .pipe(vfs.dest('assets/sass'));
+     .pipe(vfs.dest('app/styles'));
   return merge(imgStream, cssStream);
 });
 gulp.task('tiny:png',()=>{
-  return vfs.src('assets/img/**/*.*')
-  .pipe(newer(`${resultPath}/img`))
+  return vfs.src('app/img/**/*.*')
+  .pipe(newer(`public/img`))
   .pipe(tinypng(apiKey))
-  .pipe(vfs.dest(`${resultPath}/img`));
+  .pipe(vfs.dest(`public/img`));
 })
 function vendorStyles(files){
   return vfs.src(files)
@@ -114,12 +123,12 @@ function vendor(){
   }
 };
 gulp.task('vendor',vendor());
-gulp.task('default',function(){
+gulp.task('default',['server'],function(){
   try{
     fs.readFileSync('public/styles/vendor.css');
   }catch(e){
     vendor();
   }
-  gulp.watch('assets/sprite/*.png',['sprites']);
+  gulp.watch('app/sprite/**/*.png',['sprites']);
   gulp.watch('libs-path.json',['vendor']);
 })

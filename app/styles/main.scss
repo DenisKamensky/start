@@ -1,3 +1,4 @@
-body{
-  display: none;
+@import '_sprite';
+div{
+  @include sprite($one);
 }

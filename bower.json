@@ -15,6 +15,6 @@
     "tests"
   ],
   "devDependencies": {
-    "Boostrap Grid": "bootstrap-grid-css#*"
+    "bootstrap-grid": "^3.3.6-beta.1"
   }
 }
