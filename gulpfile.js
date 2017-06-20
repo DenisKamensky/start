@@ -122,7 +122,7 @@ function vendor(){
     vendorScripts(scripts);
   }
 };
-gulp.task('vendor',vendor());
+gulp.task('vendor',vendor);
 gulp.task('default',['server'],function(){
   try{
     fs.readFileSync('public/styles/vendor.css');
